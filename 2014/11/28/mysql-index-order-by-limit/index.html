@@ -67,7 +67,7 @@
   <div class="post-content">
     <header>
       
-      <time datetime="2014-11-28T03:25:00.000Z"><a href="/2014/11/28/mysql-index-order-by-limit/">Fri, Nov 28 2014, 11:25:00 am</a></time>
+      <time datetime="2014-11-28T08:25:00.000Z"><a href="/2014/11/28/mysql-index-order-by-limit/">Fri, Nov 28 2014, 4:25:00 pm</a></time>
 
   
     <h1 class="title">Mysql索引之where...order by...limit篇</h1>
@@ -98,7 +98,7 @@
 <p>记住一条：<strong>做此类查询时请务必使用索引</strong>，否则全表扫描加文件排序将会严重拖慢整个查询</p>
 <h2 id="原则">原则</h2>
 <blockquote>
-<p>order by…limit…需要综合考虑数据的重复度以及limit的数量</p>
+<p>order by…limit…需要综合考虑数据的重复度以及limit的数量<a href="http://www.percona.com/blog/2007/02/16/using-index-for-order-by-vs-restricting-number-of-rows/" target="_blank" rel="external">using-index-for-order-by-vs-restricting-number-of-rows</a></p>
 </blockquote>
 <h2 id="一些例子">一些例子</h2>
 <figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="operator"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`ind_user`</span> (</span></div><div class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT COMMENT <span class="string">'编号'</span>,</div><div class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> COMMENT <span class="string">'姓名'</span>,</div><div class="line">  <span class="string">`age`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">'0'</span> COMMENT <span class="string">'年龄'</span>,</div><div class="line">  <span class="string">`location`</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> COMMENT <span class="string">'区域'</span>,</div><div class="line">  <span class="string">`del_flag`</span> <span class="built_in">varchar</span>(<span class="number">2</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">'0'</span> COMMENT <span class="string">'删除状态'</span>,</div><div class="line">  <span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> (<span class="string">`id`</span>),</div><div class="line">  <span class="keyword">KEY</span> <span class="string">`cind`</span> (<span class="string">`age`</span>, <span class="string">`del_flag`</span>, <span class="string">`name`</span>)</div><div class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</div></pre></td></tr></table></figure>
@@ -132,10 +132,8 @@
           <div class="clearfix"></div>
           <nav id="pagination">
   
-    <a href="/2014/11/28/mysql-index-where/" class="alignleft prev"><i class="fa fa-long-arrow-left"></i>Next</a>
   
-  
-    <a href="/2014/11/27/mysql-index/" class="alignright next">Prev<i class="fa fa-long-arrow-right"></i></a>
+    <a href="/2014/11/28/mysql-index-where/" class="alignright next">Prev<i class="fa fa-long-arrow-right"></i></a>
   
   <div class="clearfix"></div>
 </nav>
