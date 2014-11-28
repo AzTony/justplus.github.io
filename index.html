@@ -100,10 +100,10 @@
   <div class="post-content">
     <header>
       
-      <time datetime="2014-11-28T03:25:00.000Z"><a href="/2014/11/28/why-index-refused-to-work/">Fri, Nov 28 2014, 11:25:00 am</a></time>
+      <time datetime="2014-11-28T03:25:00.000Z"><a href="/2014/11/28/mysql-index-where/">Fri, Nov 28 2014, 11:25:00 am</a></time>
 
   
-    <h1 class="title"><a href="/2014/11/28/why-index-refused-to-work/">Mysql索引之where篇</a></h1>
+    <h1 class="title"><a href="/2014/11/28/mysql-index-where/">Mysql索引之where篇</a></h1>
   
 
 
@@ -135,13 +135,97 @@
     <footer>
       
         <div class="alignleft">
-            <a href="/2014/11/28/why-index-refused-to-work/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+            <a href="/2014/11/28/mysql-index-where/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
         </div>
         
         
           <div class="alignright"> 
-            <a href="http://blog.zhaoliang.info/2014/11/28/why-index-refused-to-work/#comment" class="comment-link">
-              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2014/11/28/why-index-refused-to-work/">&nbsp;
+            <a href="http://blog.zhaoliang.info/2014/11/28/mysql-index-where/#comment" class="comment-link">
+              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2014/11/28/mysql-index-where/">&nbsp;
+              </span>
+            </a>
+          </div>
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2014-11-28T03:25:00.000Z"><a href="/2014/11/28/mysql-index-order-by-limit/">Fri, Nov 28 2014, 11:25:00 am</a></time>
+
+  
+    <h1 class="title"><a href="/2014/11/28/mysql-index-order-by-limit/">Mysql索引之where...order by...limit篇</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/work/">work</a>, <a href="/categories/work/mysql/">mysql</a>, <a href="/categories/work/mysql/index/">index</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/mysql/">mysql</a>, <a href="/tags/index/">index</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p>where…order by…limit结构是我们最常用的结构之一，例如，获取最近注册的10个用户，积分最高的20个用户列表等，往往也是最容易引起性能问题的。</p>
+<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="operator"><span class="keyword">select</span> * <span class="keyword">from</span> tb_name <span class="keyword">where</span> [condition] <span class="keyword">order</span> <span class="keyword">by</span></span></div></pre></td></tr></table></figure>
+
+<p>记住一条：<strong>做此类查询时请务必使用索引</strong>，否则全表扫描加文件排序将会严重拖慢整个查询</p>
+<h2 id="原则">原则</h2>
+<blockquote>
+<p>order by…limit…需要综合考虑数据的重复度以及limit的数量</p>
+</blockquote>
+<h2 id="一些例子">一些例子</h2>
+<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="operator"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`ind_user`</span> (</span></div><div class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT COMMENT <span class="string">'编号'</span>,</div><div class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> COMMENT <span class="string">'姓名'</span>,</div><div class="line">  <span class="string">`age`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">'0'</span> COMMENT <span class="string">'年龄'</span>,</div><div class="line">  <span class="string">`location`</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> COMMENT <span class="string">'区域'</span>,</div><div class="line">  <span class="string">`del_flag`</span> <span class="built_in">varchar</span>(<span class="number">2</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">'0'</span> COMMENT <span class="string">'删除状态'</span>,</div><div class="line">  <span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> (<span class="string">`id`</span>),</div><div class="line">  <span class="keyword">KEY</span> <span class="string">`cind`</span> (<span class="string">`age`</span>, <span class="string">`del_flag`</span>, <span class="string">`name`</span>)</div><div class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</div></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="header">mysql&gt; explain select * from ind_user order by age desc;</span></div><div class="line">+----+-------------+---------+------+---------------+------+---------+------+-------+----------------+</div><div class="line"><span class="header">| id | select_type | table   | type | possible_keys | key  | key_len | ref  | rows  | Extra          |</span></div><div class="line">+----+-------------+---------+------+---------------+------+---------+------+-------+----------------+</div><div class="line"><span class="header">|  1 | SIMPLE      |ind_user | ALL  | NULL          | NULL | NULL    | NULL | 27    | Using filesort |</span></div><div class="line">+----+-------------+---------+------+---------------+------+---------+------+-------+----------------+</div></pre></td></tr></table></figure>
+
+<p>order by单独使用时没有使用索引的，</p>
+
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2014/11/28/mysql-index-order-by-limit/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+          <div class="alignright"> 
+            <a href="http://blog.zhaoliang.info/2014/11/28/mysql-index-order-by-limit/#comment" class="comment-link">
+              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2014/11/28/mysql-index-order-by-limit/">&nbsp;
               </span>
             </a>
           </div>
