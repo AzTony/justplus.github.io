@@ -102,24 +102,141 @@
   <div class="post-content">
     <header>
       
-      <time datetime="2014-12-01T02:00:00.000Z"><a href="/2014/12/01/mysql-procedure/">Mon, Dec 1 2014, 10:00:00 am</a></time>
+      <time datetime="2014-12-01T08:53:17.000Z"><a href="/2014/12/01/mysql-myisam-vs-innodb/">Mon, Dec 1 2014, 4:53:17 pm</a></time>
 
   
-    <h1 class="title"><a href="/2014/12/01/mysql-procedure/">mysql存储过程</a></h1>
+    <h1 class="title"><a href="/2014/12/01/mysql-myisam-vs-innodb/">MySQL MyISAM vs InnoDB</a></h1>
   
 
 
   
   <div class="categories">
   	<i class="fa fa-folder-open"></i>
-    <a href="/categories/work/">work</a>, <a href="/categories/work/mysql/">mysql</a>, <a href="/categories/work/mysql/procedure/">procedure</a>
+    <a href="/categories/work/">work</a>, <a href="/categories/work/MySQL/">MySQL</a>, <a href="/categories/work/MySQL/engine/">engine</a>
   </div>
 
 
   
   <div class="tags">
   	<i class="fa fa-tag"></i>
-    <a href="/tags/mysql/">mysql</a>
+    <a href="/tags/MySQL/">MySQL</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p>在stackoverflow上看到一个精彩问答<a href="http://stackoverflow.com/questions/20148/myisam-versus-innodb" target="_blank" rel="external">MyISAM versus InnoDB</a>, 下面摘抄几段有意义的回答：</p>
+<ul>
+<li>回答1(258 up)</li>
+</ul>
+<p>Here is a small overview of which type you should use in which situation:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>My ISAM</th>
+<th>InnoDB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Required full text Search</td>
+<td>Yes</td>
+<td>5.6+</td>
+</tr>
+</tbody>
+</table>
+<p>Require Transactions||Yes|<br>frequent select queries|Yes||<br>frequent insert,update,delete||Yes|<br>Row Locking (multi processing on single table)||Yes|<br>Relational base design||Yes|</p>
+<p>To summarize:<br><strong>Frequent reading, almost no writing</strong>=&gt; MyISAM<br><strong>Full text search in MySQL &lt;= 5.5</strong>=&gt; MyISAM</p>
+<p>In all other circumstances, InnoDB is usually the best way to go.</p>
+<ul>
+<li>回答2(51 up)</li>
+</ul>
+<p>People often talk about performance, reads vs. writes, foreign keys, etc. but there’s one other must-have feature for a storage engine in my opinion: atomic updates.</p>
+<p>Try this:</p>
+<ol>
+<li>Issue an UPDATE against your MyISAM table that takes 5 seconds.</li>
+<li>While the UPDATE is in progress, say 2.5 seconds in, hit Ctrl-C to interrupt it.</li>
+<li>Observe the effects on the table. How many rows were updated? How many were not updated? Is the table even readable, or was it corrupted when you hit Ctrl-C?</li>
+<li>Try the same experiment with UPDATE against an InnoDB table, interrupting the query in progress.</li>
+<li>Observe the InnoDB table. Zero rows were updated. InnoDB has assured you have atomic updates, and if the full update could not be committed, it rolls back the whole change. Also, the table is not corrupt. This works even if you use killall -9 mysqld to simulate a crash.</li>
+</ol>
+<p>Performance is desirable of course, but not losing data should trump that.</p>
+<ul>
+<li>回答3(21 up)</li>
+</ul>
+<p>InnoDB offers:</p>
+<blockquote>
+<p>ACID transactions<br>row-level locking<br>foreign key constraints<br>automatic crash recovery<br>table compression (read/write)<br>spatial data types (no spatial indexes)<br>In InnoDB all data in a row except for TEXT and BLOB can occupy 8,000 bytes at most. No full text indexing is available for InnoDB. In InnoDB the COUNT(*)s (when WHERE, GROUP BY, or JOIN is not used) execute slower than in MyISAM because the row count is not stored internally. InnoDB stores both data and indexes in one file. InnoDB uses a buffer pool to cache both data and indexes.</p>
+</blockquote>
+<p>MyISAM offers:</p>
+<blockquote>
+<p>fast COUNT(*)s (when WHERE, GROUP BY, or JOIN is not used)<br>full text indexing<br>smaller disk footprint<br>very high table compression (read only)<br>spatial data types and indexes (R-tree)<br>MyISAM has table-level locking, but no row-level locking. No transactions. No automatic crash recovery, but it does offer repair table functionality. No foreign key constraints. MyISAM tables are generally more compact in size on disk when compared to InnoDB tables. MyISAM tables could be further highly reduced in size by compressing with myisampack if needed, but become read-only. MyISAM stores indexes in one file and data in another. MyISAM uses key buffers for caching indexes and leaves the data caching management to the operating system.</p>
+</blockquote>
+<p>Overall I would recommend InnoDB for most purposes and MyISAM for specialized uses only. InnoDB is now the default engine in new MySQL versions.</p>
+
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2014/12/01/mysql-myisam-vs-innodb/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+          <div class="alignright"> 
+            <a href="http://blog.zhaoliang.info/2014/12/01/mysql-myisam-vs-innodb/#comment" class="comment-link">
+              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2014/12/01/mysql-myisam-vs-innodb/">&nbsp;
+              </span>
+            </a>
+          </div>
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2014-12-01T02:00:00.000Z"><a href="/2014/12/01/mysql-procedure/">Mon, Dec 1 2014, 10:00:00 am</a></time>
+
+  
+    <h1 class="title"><a href="/2014/12/01/mysql-procedure/">MySQL存储过程</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/work/">work</a>, <a href="/categories/work/MySQL/">MySQL</a>, <a href="/categories/work/MySQL/procedure/">procedure</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/MySQL/">MySQL</a>
   </div>
 
 <div class="clear"></div>
@@ -261,21 +378,21 @@
       <time datetime="2014-11-28T03:25:00.000Z"><a href="/2014/11/28/mysql-index-where/">Fri, Nov 28 2014, 11:25:00 am</a></time>
 
   
-    <h1 class="title"><a href="/2014/11/28/mysql-index-where/">Mysql索引之where篇</a></h1>
+    <h1 class="title"><a href="/2014/11/28/mysql-index-where/">MySQL索引之where篇</a></h1>
   
 
 
   
   <div class="categories">
   	<i class="fa fa-folder-open"></i>
-    <a href="/categories/work/">work</a>, <a href="/categories/work/mysql/">mysql</a>, <a href="/categories/work/mysql/index/">index</a>
+    <a href="/categories/work/">work</a>, <a href="/categories/work/MySQL/">MySQL</a>, <a href="/categories/work/MySQL/index/">index</a>
   </div>
 
 
   
   <div class="tags">
   	<i class="fa fa-tag"></i>
-    <a href="/tags/mysql/">mysql</a>, <a href="/tags/index/">index</a>
+    <a href="/tags/MySQL/">MySQL</a>, <a href="/tags/index/">index</a>
   </div>
 
 <div class="clear"></div>
@@ -284,7 +401,7 @@
     <div class="entry">
       
         <p>不知道你是否遇到过下面这个问题，</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="header">mysql&gt; explain select * from ind_user where del_flag = 1;</span></div><div class="line">+----+-------------+---------+------+---------------+------+---------+------+-------+-------------+</div><div class="line"><span class="header">| id | select_type | table   | type | possible_keys | key  | key_len | ref  | rows  | Extra       |</span></div><div class="line">+----+-------------+---------+------+---------------+------+---------+------+-------+-------------+</div><div class="line"><span class="header">|  1 | SIMPLE      |ind_user | ALL  | del_flag      | NULL | NULL    | NULL | 27    | Using where |</span></div><div class="line">+----+-------------+---------+------+---------------+------+---------+------+-------+-------------+</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="header">MySQL&gt; explain select * from ind_user where del_flag = 1;</span></div><div class="line">+----+-------------+---------+------+---------------+------+---------+------+-------+-------------+</div><div class="line"><span class="header">| id | select_type | table   | type | possible_keys | key  | key_len | ref  | rows  | Extra       |</span></div><div class="line">+----+-------------+---------+------+---------------+------+---------+------+-------+-------------+</div><div class="line"><span class="header">|  1 | SIMPLE      |ind_user | ALL  | del_flag      | NULL | NULL    | NULL | 27    | Using where |</span></div><div class="line">+----+-------------+---------+------+---------------+------+---------+------+-------+-------------+</div></pre></td></tr></table></figure>
 
 <p>一个看似再简单不过的sql语句，尽管possible_keys已经表明可能会使用索引<code>del_flag</code>，但是最终查询时仍然没有使用索引，是怎么回事呢？</p>
 
@@ -333,21 +450,21 @@
       <time datetime="2014-11-27T14:08:00.000Z"><a href="/2014/11/27/mysql-index/">Thu, Nov 27 2014, 10:08:00 pm</a></time>
 
   
-    <h1 class="title"><a href="/2014/11/27/mysql-index/">Mysql索引</a></h1>
+    <h1 class="title"><a href="/2014/11/27/mysql-index/">MySQL索引</a></h1>
   
 
 
   
   <div class="categories">
   	<i class="fa fa-folder-open"></i>
-    <a href="/categories/work/">work</a>, <a href="/categories/work/mysql/">mysql</a>, <a href="/categories/work/mysql/index/">index</a>
+    <a href="/categories/work/">work</a>, <a href="/categories/work/MySQL/">MySQL</a>, <a href="/categories/work/MySQL/index/">index</a>
   </div>
 
 
   
   <div class="tags">
   	<i class="fa fa-tag"></i>
-    <a href="/tags/mysql/">mysql</a>, <a href="/tags/index/">index</a>
+    <a href="/tags/MySQL/">MySQL</a>, <a href="/tags/index/">index</a>
   </div>
 
 <div class="clear"></div>
@@ -355,7 +472,7 @@
     </header>
     <div class="entry">
       
-        <p>Mysql作为最常用的数据库之一应用广泛，主要原因在于简单易用，但是我们常常也会在查询时遇到慢查询的问题，尤其在数据量较大但是没法分表时尤其明显，本文将从<strong>索引</strong>的角度来分析索引在数据查询中的重要作用以及优化方法。</p>
+        <p>MySQL作为最常用的数据库之一应用广泛，主要原因在于简单易用，但是我们常常也会在查询时遇到慢查询的问题，尤其在数据量较大但是没法分表时尤其明显，本文将从<strong>索引</strong>的角度来分析索引在数据查询中的重要作用以及优化方法。</p>
 <h2 id="什么是索引？为什么我们要使用索引？">什么是索引？为什么我们要使用索引？</h2>
 <p>考虑如下情况，假设数据库中一个表有10^6条记录，DBMS的页面大小为4K，并存储100条记录。如果没有索引，查询将对整个表进行扫描，最坏的情况下，如果所有数据页都不在内存，需要读取10^4个页面，如果这10^4个页面在磁盘上随机分布，需要进行10^4次I/O，假设磁盘每次I/O时间为10ms(忽略数据传输时间)，则总共需要100s(但实际上要好很多很多)。如果对之建立B-Tree索引，则只需要进行log100(10^6)=3次页面读取，最坏情况下耗时30ms。这就是索引带来的效果，很多时候，当你的应用程序进行SQL查询速度很慢时，应该想想是否可以建索引。</p>
 <h2 id="索引的分类">索引的分类</h2>
@@ -369,7 +486,7 @@
 <ul>
 <li>索引多了，会占用很大的磁盘空间，有时候会比原有的数据还要大；</li>
 <li>索引虽然对查询有很多好处，但是对插入、删除、更新都会带来负面的影响，因为每一次操作都需要同步的更新索引。另外，尽管同一张表可以建多个索引，但是对一条查询语句而言至多只会使用一条索引；</li>
-<li>过多的索引会让mysql本身耗费很多的时间去分析采用哪条索引最快。</li>
+<li>过多的索引会让MySQL本身耗费很多的时间去分析采用哪条索引最快。</li>
 </ul>
 <p>总之，索引一定要紧紧的贴近需求，根据需求和查询语句来建立最合适的索引，另外，索引只是加速查询的方式之一，可以通过横向或纵向分表等方式加快查询。</p>
 <p>通常而言，如果你的记录数在10k~100k之间，并且查询的频率远大于删除、更新等操作，建议好好设计索引和sql语句。</p>

@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Mysql索引 | justplus</title>
+  <title>MySQL索引 | justplus</title>
   <meta name="author" content="zhaoliang">
   
-  <meta name="description" content="Mysql作为最常用的数据库之一应用广泛，主要原因在于简单易用，但是我们常常也会在查询时遇到慢查询的问题，尤其在数据量较大但是没法分表时尤其明显，本文将从索引的角度来分析索引在数据查询中的重要作用以及优化方法。
+  <meta name="description" content="MySQL作为最常用的数据库之一应用广泛，主要原因在于简单易用，但是我们常常也会在查询时遇到慢查询的问题，尤其在数据量较大但是没法分表时尤其明显，本文将从索引的角度来分析索引在数据查询中的重要作用以及优化方法。
 什么是索引？为什么我们要使用索引？
 考虑如下情况，假设数据库中一个表有10^6条记录，DBMS的页面大小为4K，并存储100条记录。如果没有索引，查询将对整个表进行扫描，最坏的情况下，如果所有数据页都不在内存，需要读取10^4个页面，如果这10^4个页面在磁盘上随机分布，需要进行10^4次I/O，假设磁盘每次I/O时间为10ms(忽略数据传输时间)，则总共需要100s(但实际上要好很多很多)。如果对之建立B-Tree索引，则只需要进行log100(10^6)=3次页面读取，最坏情况下耗时30ms。这就是索引带来的效果，很多时候，当你的应用程序进行SQL查询速度很慢时，应该想想是否可以建索引。
 索引的分类
@@ -20,7 +20,7 @@
 
 索引多了，会占用很大的磁盘空间，有时候会比原有的数据还要大；
 索引虽然对查询有很多好处，但是对插入、删除、更新都会带来负面的影响，因为每一次操作都需要同步的更新索引。另外，尽管同一张表可以建多个索引，但是对一条查询语句而言至多只会使用一条索引；
-过多的索引会让mysql本身耗费很多的时间去分析采用哪条索引最快。
+过多的索引会让MySQL本身耗费很多的时间去分析采用哪条索引最快。
 
 总之，索引一定要紧紧的贴近需求，根据需求和查询语句来建立最合适的索引，另外，索引只是加速查询的方式之一，可以通过横向或纵向分表等方式加快查询。
 通常而言，如果你的记录数在10k~100k之间，并且查询的频率远大于删除、更新等操作，建议好好设计索引和sql语句。">
@@ -28,7 +28,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Mysql索引"/>
+  <meta property="og:title" content="MySQL索引"/>
   <meta property="og:site_name" content="justplus"/>
 
   
@@ -86,21 +86,21 @@
       <time datetime="2014-11-27T14:08:00.000Z"><a href="/2014/11/27/mysql-index/">Thu, Nov 27 2014, 10:08:00 pm</a></time>
 
   
-    <h1 class="title">Mysql索引</h1>
+    <h1 class="title">MySQL索引</h1>
   
 
 
   
   <div class="categories">
   	<i class="fa fa-folder-open"></i>
-    <a href="/categories/work/">work</a>, <a href="/categories/work/mysql/">mysql</a>, <a href="/categories/work/mysql/index/">index</a>
+    <a href="/categories/work/">work</a>, <a href="/categories/work/MySQL/">MySQL</a>, <a href="/categories/work/MySQL/index/">index</a>
   </div>
 
 
   
   <div class="tags">
   	<i class="fa fa-tag"></i>
-    <a href="/tags/mysql/">mysql</a>, <a href="/tags/index/">index</a>
+    <a href="/tags/MySQL/">MySQL</a>, <a href="/tags/index/">index</a>
   </div>
 
 <div class="clear"></div>
@@ -108,7 +108,7 @@
     </header>
     <div class="entry">
       
-        <p>Mysql作为最常用的数据库之一应用广泛，主要原因在于简单易用，但是我们常常也会在查询时遇到慢查询的问题，尤其在数据量较大但是没法分表时尤其明显，本文将从<strong>索引</strong>的角度来分析索引在数据查询中的重要作用以及优化方法。</p>
+        <p>MySQL作为最常用的数据库之一应用广泛，主要原因在于简单易用，但是我们常常也会在查询时遇到慢查询的问题，尤其在数据量较大但是没法分表时尤其明显，本文将从<strong>索引</strong>的角度来分析索引在数据查询中的重要作用以及优化方法。</p>
 <h2 id="什么是索引？为什么我们要使用索引？">什么是索引？为什么我们要使用索引？</h2>
 <p>考虑如下情况，假设数据库中一个表有10^6条记录，DBMS的页面大小为4K，并存储100条记录。如果没有索引，查询将对整个表进行扫描，最坏的情况下，如果所有数据页都不在内存，需要读取10^4个页面，如果这10^4个页面在磁盘上随机分布，需要进行10^4次I/O，假设磁盘每次I/O时间为10ms(忽略数据传输时间)，则总共需要100s(但实际上要好很多很多)。如果对之建立B-Tree索引，则只需要进行log100(10^6)=3次页面读取，最坏情况下耗时30ms。这就是索引带来的效果，很多时候，当你的应用程序进行SQL查询速度很慢时，应该想想是否可以建索引。</p>
 <h2 id="索引的分类">索引的分类</h2>
@@ -122,7 +122,7 @@
 <ul>
 <li>索引多了，会占用很大的磁盘空间，有时候会比原有的数据还要大；</li>
 <li>索引虽然对查询有很多好处，但是对插入、删除、更新都会带来负面的影响，因为每一次操作都需要同步的更新索引。另外，尽管同一张表可以建多个索引，但是对一条查询语句而言至多只会使用一条索引；</li>
-<li>过多的索引会让mysql本身耗费很多的时间去分析采用哪条索引最快。</li>
+<li>过多的索引会让MySQL本身耗费很多的时间去分析采用哪条索引最快。</li>
 </ul>
 <p>总之，索引一定要紧紧的贴近需求，根据需求和查询语句来建立最合适的索引，另外，索引只是加速查询的方式之一，可以通过横向或纵向分表等方式加快查询。</p>
 <p>通常而言，如果你的记录数在10k~100k之间，并且查询的频率远大于删除、更新等操作，建议好好设计索引和sql语句。</p>
@@ -136,12 +136,12 @@
 <li>group by</li>
 <li>min/max</li>
 </ul>
-<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="operator"><span class="keyword">SELECT</span> <span class="keyword">MIN</span>(key_part_1), <span class="keyword">MAX</span>(key_part_1) <span class="keyword">from</span> tb_name <span class="keyword">WHERE</span> key_part_2=constant</span></div></pre></td></tr></table></figure>
+<figure class="highlight MySQL"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="operator"><span class="keyword">SELECT</span> <span class="keyword">MIN</span>(key_part_1), <span class="keyword">MAX</span>(key_part_1) <span class="keyword">from</span> tb_name <span class="keyword">WHERE</span> key_part_2=constant</span></div></pre></td></tr></table></figure>
 
 <ul>
 <li>某些情况下的select</li>
 </ul>
-<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> key_part_3 <span class="keyword">from</span> tb_name <span class="keyword">where</span> key_part_1=<span class="number">1</span></div></pre></td></tr></table></figure>
+<figure class="highlight MySQL"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> key_part_3 <span class="keyword">from</span> tb_name <span class="keyword">where</span> key_part_1=<span class="number">1</span></div></pre></td></tr></table></figure>
 
 <h2 id="索引原则">索引原则</h2>
 <ul>
@@ -150,7 +150,7 @@
 </ul>
 <h2 id="验证索引是否被使用">验证索引是否被使用</h2>
 <p>有时候我们针对慢查询建立了索引，但是发现查询速度依旧很慢，我们怎样知道我们建立的索引有没有生效呢？<strong>explain</strong>可以协助调整索引，判断查询语句是否使用了索引以及使用的索引列到底是哪几个。<br>explain使用很简单，只要在sql语句前加上explain即可：</p>
-<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="operator"><span class="keyword">explain</span> <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="string">`ts_blog`</span> <span class="keyword">WHERE</span> commentCount&gt;<span class="number">0</span> <span class="keyword">AND</span> <span class="string">`status`</span>=<span class="string">'1'</span> <span class="keyword">AND</span> title <span class="keyword">like</span> <span class="string">'测试%'</span>;</span></div></pre></td></tr></table></figure>
+<figure class="highlight MySQL"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="operator"><span class="keyword">explain</span> <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="string">`ts_blog`</span> <span class="keyword">WHERE</span> commentCount&gt;<span class="number">0</span> <span class="keyword">AND</span> <span class="string">`status`</span>=<span class="string">'1'</span> <span class="keyword">AND</span> title <span class="keyword">like</span> <span class="string">'测试%'</span>;</span></div></pre></td></tr></table></figure>
 
 <p>explain的输出字段如下：</p>
 <ul>
@@ -167,13 +167,13 @@
 <ul>
 <li><p>possible_keys<br>查询时可能使用的索引，但并是一定会被使用，如果该列为NULL，则表明没有合适的索引可以使用。</p>
 </li>
-<li><p>key<br>该字段是Mysql最后决定要使用的索引，需要注意的是，该值可能并没在possible_keys出现，这种情况通常发生在索引覆盖了待返回的字段，如索引(a,b,c)存在的情况下，<code>select a,b from ts_table</code>,因为此种情况下，扫描索引还是比扫描文件快。</p>
+<li><p>key<br>该字段是MySQL最后决定要使用的索引，需要注意的是，该值可能并没在possible_keys出现，这种情况通常发生在索引覆盖了待返回的字段，如索引(a,b,c)存在的情况下，<code>select a,b from ts_table</code>,因为此种情况下，扫描索引还是比扫描文件快。</p>
 </li>
 <li><p>key_len<br>使用索引字段的大小，单位为字节。通过该字段可以帮助判断实际查询时到底使用了哪几个索引。</p>
 </li>
 <li><p>ref<br>和<code>key</code>字段配合进行查询操作的字段。</p>
 </li>
-<li><p>rows<br>Mysql认为需要检索的行数。</p>
+<li><p>rows<br>MySQL认为需要检索的行数。</p>
 </li>
 <li><p>filtered</p>
 </li>
