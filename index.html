@@ -127,112 +127,14 @@
     </header>
     <div class="entry">
       
-        <h2 id="mysql存储过程和函数的区别">mysql存储过程和函数的区别</h2>
+        <h2 id="存储过程">存储过程</h2>
 <p>通常执行的单条SQL语句均需要先编译，然后运行，而存储过程是一组SQL语句集，编译之后存储在数据库，因此存储过程是预编译的，有较快的执行速度。</p>
 <p>存储过程是用户定义的一系列sql语句的集合，涉及特定表或其它对象的任务，用户可以调用存储过程，而函数通常是数据库已定义的方法，它接收参数并返回某种类型的值并且不涉及特定用户表。<br>存储过程和函数存在以下几个区别：</p>
 <ul>
 <li>一般来说，存储过程实现的功能要复杂一点，而函数的实现的功能针对性比较强。存储过程，功能强大，可以执行包括修改表等一系列数据库操作；用户定义函数不能用于执行一组修改全局数据库状态的操作(可以在函数中查询数据库，将查询的返回结果赋值等)。</li>
 <li>对于存储过程来说可以返回参数，如记录集，而函数只能返回值或者表对象。函数只能返回一个变量；而存储过程可以返回多个。存储过程的参数可以有IN,OUT,INOUT三种类型，而函数只能有IN类~~存储过程声明时不需要返回类型，而函数声明时需要描述返回类型，且函数体中必须包含一个有效的RETURN语句。</li>
 <li>存储过程，可以使用非确定函数，不允许在用户定义函数主体中内置非确定函数。</li>
-<li>存储过程一般是作为一个独立的部分来执行(EXECUTE 语句执行)，而函数可以作为查询语句的一个部分来调用(SELECT调用), 由于函数可以返回一个表对象，因此它可以在查询语句中位于FROM关键字的后面。 SQL语句中不可用存储过程，而可以使用函数。</li>
-</ul>
-<h2 id="存储过程的使用">存储过程的使用</h2>
-<h3 id="参数">参数</h3>
-<p>存储过程的参数不同于函数，可以为IN、OUT、INOUT三种</p>
-<ul>
-<li>IN</li>
-</ul>
-<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">DELIMITER $$</div><div class="line"><span class="keyword">CREATE</span> <span class="function"><span class="keyword">PROCEDURE</span> <span class="title">P_PROC</span><span class="params">(<span class="keyword">IN</span> param INT)</span></span></div><div class="line"><span class="title">BEGIN</span></div><div class="line">	<span class="title">SELECT</span> <span class="title">param</span>;</div><div class="line">	<span class="keyword">SET</span> param = <span class="number">10</span>;</div><div class="line">	<span class="keyword">SELECT</span> param;</div><div class="line"><span class="keyword">END</span>;$$</div><div class="line">DELIMITER</div><div class="line"></div><div class="line"><span class="keyword">SET</span> @param=<span class="number">1</span>;</div><div class="line">CALL P_PROC(@param);</div><div class="line"><span class="keyword">SELECT</span> @param;</div><div class="line"><span class="comment">//输出结果</span></div><div class="line"><span class="number">1</span> <span class="number">10</span> <span class="number">1</span></div></pre></td></tr></table></figure>
-
-<ul>
-<li>OUT</li>
-</ul>
-<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">DELIMITER $$</div><div class="line"><span class="keyword">CREATE</span> <span class="function"><span class="keyword">PROCEDURE</span> <span class="title">P_PROC</span><span class="params">(<span class="keyword">OUT</span> param INT)</span></span></div><div class="line"><span class="title">BEGIN</span></div><div class="line">	<span class="title">SELECT</span> <span class="title">param</span>;</div><div class="line">	<span class="keyword">SET</span> param = <span class="number">10</span>;</div><div class="line">	<span class="keyword">SELECT</span> param;</div><div class="line"><span class="keyword">END</span>;$$</div><div class="line">DELIMITER</div><div class="line"></div><div class="line"><span class="keyword">SET</span> @param=<span class="number">1</span>;</div><div class="line">CALL P_PROC(@param);</div><div class="line"><span class="keyword">SELECT</span> @param;</div><div class="line"><span class="comment">//输出结果</span></div><div class="line">NULL <span class="number">10</span> <span class="number">10</span></div></pre></td></tr></table></figure>
-
-<ul>
-<li>INOUT</li>
-</ul>
-<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">DELIMITER $$</div><div class="line"><span class="keyword">CREATE</span> <span class="function"><span class="keyword">PROCEDURE</span> <span class="title">P_PROC</span><span class="params">(INOUT param INT)</span></span></div><div class="line"><span class="title">BEGIN</span></div><div class="line">	<span class="title">SELECT</span> <span class="title">param</span>;</div><div class="line">	<span class="keyword">SET</span> param = <span class="number">10</span>;</div><div class="line">	<span class="keyword">SELECT</span> param;</div><div class="line"><span class="keyword">END</span>;$$</div><div class="line">DELIMITER</div><div class="line"></div><div class="line"><span class="keyword">SET</span> @param=<span class="number">1</span>;</div><div class="line">CALL P_PROC(@param);</div><div class="line"><span class="keyword">SELECT</span> @param;</div><div class="line"><span class="comment">//输出结果</span></div><div class="line"><span class="number">1</span> <span class="number">10</span> <span class="number">10</span></div></pre></td></tr></table></figure>
-
-<h3 id="变量">变量</h3>
-<ul>
-<li>变量定义</li>
-</ul>
-<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="operator"><span class="keyword">DECLARE</span> variable_name [,variable_name...] datatype [<span class="keyword">DEFAULT</span> <span class="keyword">value</span>];</span></div><div class="line"></div><div class="line"><span class="operator"><span class="keyword">DECLARE</span> <span class="keyword">var</span> <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">DEFAULT</span> <span class="string">'hello'</span>;</span></div></pre></td></tr></table></figure>
-
-<ul>
-<li>变量赋值</li>
-</ul>
-<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="operator"><span class="keyword">SET</span> variable_name = expression [,variable_name = expression...];</span></div><div class="line"></div><div class="line"><span class="operator"><span class="keyword">SET</span> <span class="keyword">var</span> = <span class="keyword">var</span> + <span class="number">1</span>;</span></div></pre></td></tr></table></figure>
-
-<ul>
-<li>用户变量</li>
-</ul>
-<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="operator"><span class="keyword">SET</span> @<span class="keyword">var</span> = <span class="string">'hello world'</span>;</span></div></pre></td></tr></table></figure>
-
-<h3 id="控制语句">控制语句</h3>
-<ul>
-<li><p>if…then…else…endif</p>
-</li>
-<li><p>case…when…then…endcase</p>
-</li>
-<li><p>while…do…endwhile</p>
-</li>
-<li><p>repeate…util…endrepeat</p>
-</li>
-<li><p>…</p>
-</li>
-</ul>
-<h3 id="异常处理">异常处理</h3>
-<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="operator"><span class="keyword">DECLARE</span> handler_action <span class="keyword">HANDLER</span> <span class="keyword">FOR</span> condition_val[, condition_val]</span></div><div class="line">statement</div></pre></td></tr></table></figure>
-
-<p>其中handler_action: CONTINUE|EXITUNDO;<br>condition_val: mysql_error_code|SQLWARNING|NOT FOUND|SQLEXCEPTION|…<br>来个例子</p>
-<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="operator"><span class="keyword">DECLARE</span> duplicate_key CONDITION <span class="keyword">FOR</span> <span class="keyword">SQLSTATE</span> <span class="string">'23000'</span>;</span></div><div class="line"><span class="operator"><span class="keyword">DECLARE</span> <span class="keyword">CONTINUE</span> <span class="keyword">HANDLER</span> <span class="keyword">FOR</span> duplicate_key</span></div><div class="line">  <span class="keyword">BEGIN</span></div><div class="line">    <span class="comment">-- body of handler</span></div><div class="line">  <span class="keyword">END</span>;</div></pre></td></tr></table></figure>
-
-<h3 id="游标">游标</h3>
-<blockquote>
-<p>游标的作用就是用于对查询数据库所返回的记录进行遍历，以便进行相应的操作。游标的主要属性有：</p>
-<ol>
-<li>游标是只读的，不能对其进行读之外的操作；</li>
-<li>游标只能在一个方向上遍历；</li>
-<li>避免在已经打开游标的表上更新数据。</li>
-</ol>
-</blockquote>
-<h4 id="游标的使用方法：">游标的使用方法：</h4>
-<ul>
-<li>声明一个游标</li>
-</ul>
-<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="operator"><span class="keyword">DECLARE</span> cursor_name <span class="keyword">CURSOR</span> <span class="keyword">FOR</span> select_statement;</span></div></pre></td></tr></table></figure>
-
-<ul>
-<li>打开声明的游标</li>
-</ul>
-<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">OPEN</span> cursor_name;</div></pre></td></tr></table></figure>
-
-<ul>
-<li>使用FETCH获取一行数据</li>
-</ul>
-<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">FETCH cursor_name <span class="keyword">INTO</span> var_list<span class="comment">;</span></div></pre></td></tr></table></figure>
-
-<ul>
-<li>关闭游标</li>
-</ul>
-<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">CLOSE</span> cursor_name;</div></pre></td></tr></table></figure>
-
-<h2 id="实例">实例</h2>
-<p>函数</p>
-<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">DELIMITER $$</div><div class="line"><span class="operator"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> F_Dist3D (x1 <span class="built_in">decimal</span>, y1 <span class="built_in">decimal</span>) </span></div><div class="line"><span class="keyword">RETURNS</span> <span class="built_in">decimal</span></div><div class="line">DETERMINISTIC</div><div class="line"><span class="keyword">BEGIN</span> </div><div class="line">  <span class="keyword">DECLARE</span> dist <span class="built_in">decimal</span>;</div><div class="line">  <span class="operator"><span class="keyword">SET</span> dist = <span class="keyword">SQRT</span>(x1 - y1);</span></div><div class="line">  RETURN dist;</div><div class="line"><span class="operator"><span class="keyword">END</span>$$</span></div><div class="line">DELIMITER ;</div></pre></td></tr></table></figure>
-
-<p>存储过程</p>
-<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">DELIMITER $$</div><div class="line"><span class="keyword">CREATE</span> <span class="function"><span class="keyword">PROCEDURE</span> <span class="title">P_PROC1</span> <span class="params">(<span class="keyword">IN</span> u_id INT, <span class="keyword">OUT</span> c_count INT)</span> </span></div><div class="line"><span class="title">BEGIN</span> </div><div class="line">  <span class="title">SELECT</span> <span class="title">COUNT</span><span class="params">(*)</span> <span class="title">FROM</span> `<span class="title">t_user</span>` <span class="title">WHERE</span> <span class="title">uid</span> = <span class="title">u_id</span>;</div><div class="line"><span class="keyword">END</span>$$</div><div class="line">DELIMITER ;</div></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight mysql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">DELIMITER $$</div><div class="line"></div><div class="line">DROP PROCEDURE <span class="keyword">IF</span> EXISTS `test`.`CursorProc` $$</div><div class="line">CREATE PROCEDURE `test`.`CursorProc` ()</div><div class="line">BEGIN</div><div class="line"> <span class="keyword">DECLARE</span>  no_more_products, quantity_in_stock INT <span class="keyword">DEFAULT</span> <span class="number">0</span>;</div><div class="line"> <span class="keyword">DECLARE</span>  prd_code VARCHAR(<span class="number">255</span>);</div><div class="line"> /* 首先这里对游标进行定义*/</div><div class="line"> <span class="keyword">DECLARE</span>  cur_product CURSOR <span class="keyword">FOR</span>   <span class="keyword">SELECT</span> code <span class="keyword">FROM</span> products; </div><div class="line"> /* 针对<span class="keyword">NOT</span> FOUND的处理*/</div><div class="line"> <span class="keyword">DECLARE</span>  <span class="keyword">CONTINUE</span> HANDLER <span class="keyword">FOR</span> <span class="keyword">NOT</span> FOUND  <span class="keyword">SET</span>  no_more_products = <span class="number">1</span>; </div><div class="line"></div><div class="line"> /* 创建个临时表格来保持*/</div><div class="line"> CREATE TEMPORARY TABLE infologs (</div><div class="line"> Id int(<span class="number">11</span>) <span class="keyword">NOT</span> NULL AUTO_INCREMENT,</div><div class="line"> Msg varchar(<span class="number">255</span>) <span class="keyword">NOT</span> NULL,</div><div class="line"> PRIMARY <span class="keyword">KEY</span> (Id)</div><div class="line"> );</div><div class="line"></div><div class="line"> /* 接着使用OPEN打开游标*/</div><div class="line"> OPEN  cur_product; </div><div class="line"> /* 把第一行数据写入变量中,游标也随之指向了记录的第一行*/</div><div class="line"> FETCH  cur_product <span class="keyword">INTO</span> prd_code; </div><div class="line"></div><div class="line"> REPEAT</div><div class="line"></div><div class="line"> <span class="keyword">SELECT</span>  quantity <span class="keyword">INTO</span> quantity_in_stock</div><div class="line"> <span class="keyword">FROM</span>  products</div><div class="line"> <span class="keyword">WHERE</span>  code = prd_code;</div><div class="line"> </div><div class="line"> <span class="keyword">IF</span>  quantity_in_stock &lt; <span class="number">100</span> <span class="keyword">THEN</span></div><div class="line"> INSERT  <span class="keyword">INTO</span> infologs(msg)</div><div class="line"> VALUES  (prd_code);</div><div class="line"> <span class="keyword">END</span>  <span class="keyword">IF</span>;</div><div class="line"> FETCH  cur_product <span class="keyword">INTO</span> prd_code;</div><div class="line"></div><div class="line"> <span class="keyword">UNTIL</span>  no_more_products = <span class="number">1</span></div><div class="line"> <span class="keyword">END</span> REPEAT;</div><div class="line"> /* 用完后记得用CLOSE把资源释放掉*/</div><div class="line"> CLOSE  cur_product;  </div><div class="line"> <span class="keyword">SELECT</span> *  <span class="keyword">FROM</span> infologs;</div><div class="line"> DROP TABLE  infologs;</div><div class="line"><span class="keyword">END</span> $$</div><div class="line"></div><div class="line">DELIMITER ;</div></pre></td></tr></table></figure>
-
-<hr>
-<p>参考: <a href="http://blog.csdn.net/rdarda/article/category/1214941" target="_blank" rel="external">rdarda</a></p>
-
+<li>存储过程一般是作为一个独立的部分来执行(EXECUTE 语句执行)，而函数可以作为查询语句的一个部分来调用(SELECT调用), 由于函数可以返回一个表对象，因此它可以在查询语句中位于FROM关键字的后面。 SQL语句中不可用存储过程，而可以使用函数。<br>
       
     </div>
     <footer>
