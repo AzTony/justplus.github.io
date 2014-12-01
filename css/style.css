@@ -454,6 +454,10 @@ article footer .tags {
 .comment-link .fa {
   margin-right: 5px;
 }
+table th {
+  border-bottom: 2px solid;
+  min-width: 100px;
+}
 #comment {
   background: #fff;
   margin-bottom: 50px;

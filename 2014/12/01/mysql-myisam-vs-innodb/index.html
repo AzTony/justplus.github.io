@@ -120,7 +120,7 @@ Here is a small overview of which type you should use in which situation:
 </tr>
 </tbody>
 </table>
-<p>Require Transactions||Yes|<br>frequent select queries|Yes||<br>frequent insert,update,delete||Yes|<br>Row Locking (multi processing on single table)||Yes|<br>Relational base design||Yes|</p>
+<p>Require Transactions| |Yes|<br>frequent select queries|Yes| |<br>frequent insert,update,delete| |Yes|<br>Row Locking (multi processing on single table)| |Yes|<br>Relational base design| |Yes|</p>
 <p>To summarize:<br><strong>Frequent reading, almost no writing</strong>=&gt; MyISAM<br><strong>Full text search in MySQL &lt;= 5.5</strong>=&gt; MyISAM</p>
 <p>In all other circumstances, InnoDB is usually the best way to go.</p>
 <ul>
