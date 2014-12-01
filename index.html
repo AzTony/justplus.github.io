@@ -135,7 +135,7 @@
 <table>
 <thead>
 <tr>
-<th></th>
+<th>-</th>
 <th>My ISAM</th>
 <th>InnoDB</th>
 </tr>
@@ -148,35 +148,9 @@
 </tr>
 </tbody>
 </table>
-<p>Require Transactions| |Yes|<br>frequent select queries|Yes| |<br>frequent insert,update,delete| |Yes|<br>Row Locking (multi processing on single table)| |Yes|<br>Relational base design| |Yes|</p>
+<p>Require Transactions|-|Yes<br>frequent select queries|Yes|-<br>frequent insert,update,delete|-|Yes<br>Row Locking (multi processing on single table)|-|Yes<br>Relational base design|-|Yes</p>
 <p>To summarize:<br><strong>Frequent reading, almost no writing</strong>=&gt; MyISAM<br><strong>Full text search in MySQL &lt;= 5.5</strong>=&gt; MyISAM</p>
-<p>In all other circumstances, InnoDB is usually the best way to go.</p>
-<ul>
-<li>回答2(51 up)</li>
-</ul>
-<p>People often talk about performance, reads vs. writes, foreign keys, etc. but there’s one other must-have feature for a storage engine in my opinion: atomic updates.</p>
-<p>Try this:</p>
-<ol>
-<li>Issue an UPDATE against your MyISAM table that takes 5 seconds.</li>
-<li>While the UPDATE is in progress, say 2.5 seconds in, hit Ctrl-C to interrupt it.</li>
-<li>Observe the effects on the table. How many rows were updated? How many were not updated? Is the table even readable, or was it corrupted when you hit Ctrl-C?</li>
-<li>Try the same experiment with UPDATE against an InnoDB table, interrupting the query in progress.</li>
-<li>Observe the InnoDB table. Zero rows were updated. InnoDB has assured you have atomic updates, and if the full update could not be committed, it rolls back the whole change. Also, the table is not corrupt. This works even if you use killall -9 mysqld to simulate a crash.</li>
-</ol>
-<p>Performance is desirable of course, but not losing data should trump that.</p>
-<ul>
-<li>回答3(21 up)</li>
-</ul>
-<p>InnoDB offers:</p>
-<blockquote>
-<p>ACID transactions<br>row-level locking<br>foreign key constraints<br>automatic crash recovery<br>table compression (read/write)<br>spatial data types (no spatial indexes)<br>In InnoDB all data in a row except for TEXT and BLOB can occupy 8,000 bytes at most. No full text indexing is available for InnoDB. In InnoDB the COUNT(*)s (when WHERE, GROUP BY, or JOIN is not used) execute slower than in MyISAM because the row count is not stored internally. InnoDB stores both data and indexes in one file. InnoDB uses a buffer pool to cache both data and indexes.</p>
-</blockquote>
-<p>MyISAM offers:</p>
-<blockquote>
-<p>fast COUNT(*)s (when WHERE, GROUP BY, or JOIN is not used)<br>full text indexing<br>smaller disk footprint<br>very high table compression (read only)<br>spatial data types and indexes (R-tree)<br>MyISAM has table-level locking, but no row-level locking. No transactions. No automatic crash recovery, but it does offer repair table functionality. No foreign key constraints. MyISAM tables are generally more compact in size on disk when compared to InnoDB tables. MyISAM tables could be further highly reduced in size by compressing with myisampack if needed, but become read-only. MyISAM stores indexes in one file and data in another. MyISAM uses key buffers for caching indexes and leaves the data caching management to the operating system.</p>
-</blockquote>
-<p>Overall I would recommend InnoDB for most purposes and MyISAM for specialized uses only. InnoDB is now the default engine in new MySQL versions.</p>
-
+<p>In all other circumstances, InnoDB is usually the best way to go.<br>
       
     </div>
     <footer>

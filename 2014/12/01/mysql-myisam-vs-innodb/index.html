@@ -14,7 +14,22 @@ Here is a small overview of which type you should use in which situation:
 
 
 
-">
+-
+My ISAM
+InnoDB
+
+
+
+
+Required full text Search
+Yes
+5.6+
+
+
+
+Require Transactions|-|Yesfrequent select queries|Yes|-frequent insert,update,delete|-|YesRow Locking (multi processing on single table)|-|YesRelational base design|-|Yes
+To summarize:Frequent reading, almost no writing=&amp;gt; MyISAMFull text search in MySQL &amp;lt;= 5.5=&amp;gt; MyISAM
+In all other circumstances, InnoDB is usually the best way to go.">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -107,7 +122,7 @@ Here is a small overview of which type you should use in which situation:
 <table>
 <thead>
 <tr>
-<th></th>
+<th>-</th>
 <th>My ISAM</th>
 <th>InnoDB</th>
 </tr>
@@ -120,9 +135,9 @@ Here is a small overview of which type you should use in which situation:
 </tr>
 </tbody>
 </table>
-<p>Require Transactions| |Yes|<br>frequent select queries|Yes| |<br>frequent insert,update,delete| |Yes|<br>Row Locking (multi processing on single table)| |Yes|<br>Relational base design| |Yes|</p>
+<p>Require Transactions|-|Yes<br>frequent select queries|Yes|-<br>frequent insert,update,delete|-|Yes<br>Row Locking (multi processing on single table)|-|Yes<br>Relational base design|-|Yes</p>
 <p>To summarize:<br><strong>Frequent reading, almost no writing</strong>=&gt; MyISAM<br><strong>Full text search in MySQL &lt;= 5.5</strong>=&gt; MyISAM</p>
-<p>In all other circumstances, InnoDB is usually the best way to go.</p>
+<p>In all other circumstances, InnoDB is usually the best way to go.<br><a id="more"></a></p>
 <ul>
 <li>回答2(51 up)</li>
 </ul>
