@@ -776,11 +776,13 @@ figure.highlight table {
 figure.highlight .gutter {
   color: #777;
   padding-right: 15px;
+  border: none;
   border-right: 1px solid #ddd;
   text-align: right;
 }
 figure.highlight .code {
   padding-left: 15px;
+  border: none;
   border-left: 1px solid #fff;
   color: #666;
 }
