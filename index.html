@@ -102,6 +102,161 @@
   <div class="post-content">
     <header>
       
+      <time datetime="2014-12-13T06:01:10.000Z"><a href="/2014/12/13/fiddler-watches-java-program/">Sat, Dec 13 2014, 2:01:10 pm</a></time>
+
+  
+    <h1 class="title"><a href="/2014/12/13/fiddler-watches-java-program/">Fiddler监控java程序</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/util/">util</a>, <a href="/categories/util/fiddler/">fiddler</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/java/">java</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p>默认情况下，Fiddler不能监听Java HttpURLConnection请求的，有两种方式可以让fiddler很好的监控java代码中的http请求：</p>
+<ul>
+<li>请求代码之前添加</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">System.setProperty(<span class="string">"http.proxyHost"</span>, <span class="string">"localhost"</span>);</div><div class="line">System.setProperty(<span class="string">"http.proxyPort"</span>, <span class="string">"8888"</span>);</div></pre></td></tr></table></figure>
+
+<ul>
+<li>启动java-VM时携带参数</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-Dhttp.<span class="variable">proxyHost=</span>localhost -Dhttp.<span class="variable">proxyPort=</span><span class="number">8888</span></div></pre></td></tr></table></figure>
+
+<p> 如果你的请求时https的话，除了需要设置<code>https.proxyHost</code>以及·<code>https.proxyPort</code>之外，还需要应用程序信任证书FiddlerRoot.cer。</p>
+<p> 至此java程序发出的请求基本都会被监控到了，但是还有一个问题，发给本地代码(localhost)的请求仍然不能被监控到，因为fiddler默认会忽略localhost以及127.0.0.1的请求，可以使用机器名来宿主网站以骗过fiddler…</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http:<span class="comment">//zhaoliang:8090/api</span></div></pre></td></tr></table></figure>
+
+<p><img src="https://api.sinas3.com/v1/SAE_iahu/myalbum/fiddler.png" alt="localhost"></p>
+
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2014/12/13/fiddler-watches-java-program/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+          <div class="alignright"> 
+            <a href="http://blog.zhaoliang.info/2014/12/13/fiddler-watches-java-program/#comment" class="comment-link">
+              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2014/12/13/fiddler-watches-java-program/">&nbsp;
+              </span>
+            </a>
+          </div>
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2014-12-06T01:40:00.000Z"><a href="/2014/12/06/wsgi-introduce/">Sat, Dec 6 2014, 9:40:00 am</a></time>
+
+  
+    <h1 class="title"><a href="/2014/12/06/wsgi-introduce/">WSGI</a></h1>
+  
+
+
+  
+  <div class="categories">
+  	<i class="fa fa-folder-open"></i>
+    <a href="/categories/python/">python</a>, <a href="/categories/python/flask/">flask</a>, <a href="/categories/python/flask/wsgi/">wsgi</a>
+  </div>
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/wsgi/">wsgi</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <h3 id="术语">术语</h3>
+<p>web服务器(web server):<br>:    web服务器负责接收来自客户端(如浏览器)的请求，并返回一个响应。web服务器本身不生成响应内容，它仅仅负责返回( Web server doesn’t create the response, it only returns the response.)。产生响应的是下面提到的<strong>web应用程序</strong>，因此web服务器需要能和web应用程序通信，获取响应并返回给客户端。</p>
+<p>web应用程序(web application):<br>:    web应用程序的作用是产生响应并返回给web服务器。</p>
+<p>WSGI(web server gateway interface):<br>:    WSGI不是软件，不是服务器，不是框架，不是python模块，仅仅是定义了一些接口，方便web服务器和web应用程序通信。二这些接口需要web服务器和web应用程序实现。<br>
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2014/12/06/wsgi-introduce/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+          <div class="alignright"> 
+            <a href="http://blog.zhaoliang.info/2014/12/06/wsgi-introduce/#comment" class="comment-link">
+              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2014/12/06/wsgi-introduce/">&nbsp;
+              </span>
+            </a>
+          </div>
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
       <time datetime="2014-12-01T14:40:00.000Z"><a href="/2014/12/01/machine-learning-step/">Mon, Dec 1 2014, 10:40:00 pm</a></time>
 
   
@@ -130,7 +285,7 @@
         <p>在<a href="http://blog.csdn.net/v_july_v/article/details/7237351" target="_blank" rel="external">july博客</a>上看到了机器学习的课程安排，感觉是一种学习思路，不妨按照这个思路学习一下：</p>
 <h3 id="机器学习中的数学基础">机器学习中的数学基础</h3>
 <ul>
-<li>机器学习综述、与微积分（函数与极限、导数与微分、不定积分与定积分）</li>
+<li>机器学习综述、微积分（函数与极限、导数与微分、不定积分与定积分）</li>
 <li>概率论与数理统计（期望方差、大数定律、二项分布、中心极限定理、贝叶斯、最小二乘法、正态分布、极大似然估计、回归分析）</li>
 <li>矩阵（正交矩阵、协方差矩阵、SVD）</li>
 <li>最优化（凸函数、凸优化、对偶问题）；</li>

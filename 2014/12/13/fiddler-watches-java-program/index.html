@@ -3,25 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Machine Learning | justplus</title>
+  <title>Fiddler监控java程序 | justplus</title>
   <meta name="author" content="zhaoliang">
   
-  <meta name="description" content="在july博客上看到了机器学习的课程安排，感觉是一种学习思路，不妨按照这个思路学习一下：
-机器学习中的数学基础
+  <meta name="description" content="默认情况下，Fiddler不能监听Java HttpURLConnection请求的，有两种方式可以让fiddler很好的监控java代码中的http请求：
 
-机器学习综述、微积分（函数与极限、导数与微分、不定积分与定积分）
-概率论与数理统计（期望方差、大数定律、二项分布、中心极限定理、贝叶斯、最小二乘法、正态分布、极大似然估计、回归分析）
-矩阵（正交矩阵、协方差矩阵、SVD）
-最优化（凸函数、凸优化、对偶问题）；
+请求代码之前添加
 
-线性回归、logistic回归、最小二乘、梯度下降、拟牛顿
-熵、最大熵模型MaxEnt、改进的迭代尺度法IIS
-聚类">
+12System.setProperty(&quot;http.proxyHost&quot;, &quot;localhost&quot;);System.s">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Machine Learning"/>
+  <meta property="og:title" content="Fiddler监控java程序"/>
   <meta property="og:site_name" content="justplus"/>
 
   
@@ -76,24 +70,24 @@
   <div class="post-content">
     <header>
       
-      <time datetime="2014-12-01T14:40:00.000Z"><a href="/2014/12/01/machine-learning-step/">Mon, Dec 1 2014, 10:40:00 pm</a></time>
+      <time datetime="2014-12-13T06:01:10.000Z"><a href="/2014/12/13/fiddler-watches-java-program/">Sat, Dec 13 2014, 2:01:10 pm</a></time>
 
   
-    <h1 class="title">Machine Learning</h1>
+    <h1 class="title">Fiddler监控java程序</h1>
   
 
 
   
   <div class="categories">
   	<i class="fa fa-folder-open"></i>
-    <a href="/categories/Machine-Learning/">Machine Learning</a>
+    <a href="/categories/util/">util</a>, <a href="/categories/util/fiddler/">fiddler</a>
   </div>
 
 
   
   <div class="tags">
   	<i class="fa fa-tag"></i>
-    <a href="/tags/Machine-Learning/">Machine Learning</a>
+    <a href="/tags/java/">java</a>
   </div>
 
 <div class="clear"></div>
@@ -101,38 +95,22 @@
     </header>
     <div class="entry">
       
-        <p>在<a href="http://blog.csdn.net/v_july_v/article/details/7237351" target="_blank" rel="external">july博客</a>上看到了机器学习的课程安排，感觉是一种学习思路，不妨按照这个思路学习一下：</p>
-<h3 id="机器学习中的数学基础">机器学习中的数学基础</h3>
+        <p>默认情况下，Fiddler不能监听Java HttpURLConnection请求的，有两种方式可以让fiddler很好的监控java代码中的http请求：</p>
 <ul>
-<li>机器学习综述、微积分（函数与极限、导数与微分、不定积分与定积分）</li>
-<li>概率论与数理统计（期望方差、大数定律、二项分布、中心极限定理、贝叶斯、最小二乘法、正态分布、极大似然估计、回归分析）</li>
-<li>矩阵（正交矩阵、协方差矩阵、SVD）</li>
-<li>最优化（凸函数、凸优化、对偶问题）；</li>
+<li>请求代码之前添加</li>
 </ul>
-<h3 id="线性回归、logistic回归、最小二乘、梯度下降、拟牛顿">线性回归、logistic回归、最小二乘、梯度下降、拟牛顿</h3>
-<h3 id="熵、最大熵模型MaxEnt、改进的迭代尺度法IIS">熵、最大熵模型MaxEnt、改进的迭代尺度法IIS</h3>
-<h3 id="聚类">聚类</h3>
-<p><a id="more"></a></p>
-<h3 id="分类">分类</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">System.setProperty(<span class="string">"http.proxyHost"</span>, <span class="string">"localhost"</span>);</div><div class="line">System.setProperty(<span class="string">"http.proxyPort"</span>, <span class="string">"8888"</span>);</div></pre></td></tr></table></figure>
+
 <ul>
-<li>K近邻、决策树、Adaboot、随机森林</li>
-<li>贝叶斯、贝叶斯网络</li>
-<li>支持向量机</li>
-<li>EM、混合高斯模型</li>
+<li>启动java-VM时携带参数</li>
 </ul>
-<h3 id="主题模型">主题模型</h3>
-<h3 id="标注">标注</h3>
-<ul>
-<li>马尔科夫链与隐马尔可夫HMM</li>
-<li>条件随机场CRF、对概率机器学习模型的综合理解（ML-&gt;指数族-&gt;Mixture-&gt;EM-&gt;Bayes-&gt;共轭-&gt;Evidence Framwork-&gt;变分）</li>
-</ul>
-<h3 id="降维与因子分析">降维与因子分析</h3>
-<ul>
-<li>主成分分析PCA、独立成分分析ICA、线性判别分析LDA（二分类、多分类）、因子分析</li>
-</ul>
-<h3 id="再谈SVD、推荐系统、协同过滤、典型关联分析CCA">再谈SVD、推荐系统、协同过滤、典型关联分析CCA</h3>
-<h3 id="神经网络、和深度学习（浅析_&amp;_深入）">神经网络、和深度学习（浅析 &amp; 深入）</h3>
-<h3 id="再谈Adaboost、在线学习、增强学习、强迫学习、随机森林">再谈Adaboost、在线学习、增强学习、强迫学习、随机森林</h3>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-Dhttp.<span class="variable">proxyHost=</span>localhost -Dhttp.<span class="variable">proxyPort=</span><span class="number">8888</span></div></pre></td></tr></table></figure>
+
+<p> 如果你的请求时https的话，除了需要设置<code>https.proxyHost</code>以及·<code>https.proxyPort</code>之外，还需要应用程序信任证书FiddlerRoot.cer。</p>
+<p> 至此java程序发出的请求基本都会被监控到了，但是还有一个问题，发给本地代码(localhost)的请求仍然不能被监控到，因为fiddler默认会忽略localhost以及127.0.0.1的请求，可以使用机器名来宿主网站以骗过fiddler…</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http:<span class="comment">//zhaoliang:8090/api</span></div></pre></td></tr></table></figure>
+
+<p><img src="https://api.sinas3.com/v1/SAE_iahu/myalbum/fiddler.png" alt="localhost"></p>
 
       
     </div>
@@ -157,10 +135,8 @@
           <div class="clearfix"></div>
           <nav id="pagination">
   
-    <a href="/2014/12/06/wsgi-introduce/" class="alignleft prev"><i class="fa fa-long-arrow-left"></i>Next</a>
   
-  
-    <a href="/2014/12/01/mysql-myisam-vs-innodb/" class="alignright next">Prev<i class="fa fa-long-arrow-right"></i></a>
+    <a href="/2014/12/06/wsgi-introduce/" class="alignright next">Prev<i class="fa fa-long-arrow-right"></i></a>
   
   <div class="clearfix"></div>
 </nav>
@@ -176,7 +152,7 @@
 
   
       <!-- Duoshuo Comment BEGIN -->
-<div class="ds-thread" data-thread-key="/2014/12/01/machine-learning-step/"></div>
+<div class="ds-thread" data-thread-key="/2014/12/13/fiddler-watches-java-program/"></div>
 <!-- Duoshuo Comment END -->
   
 </section>

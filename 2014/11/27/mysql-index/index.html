@@ -169,16 +169,22 @@
 </li>
 <li><p>key<br>该字段是MySQL最后决定要使用的索引，需要注意的是，该值可能并没在possible_keys出现，这种情况通常发生在索引覆盖了待返回的字段，如索引(a,b,c)存在的情况下，<code>select a,b from ts_table</code>,因为此种情况下，扫描索引还是比扫描文件快。</p>
 </li>
-<li><p>key_len<br>使用索引字段的大小，单位为字节。通过该字段可以帮助判断实际查询时到底使用了哪几个索引。</p>
+<li><p>key_len<br>使用索引字段的大小，单位为字节。通过该字段可以帮助判断实际查询时到底使用了哪几个索引。此处的长度仅限于条件检索使用索引的字节数，不包括order by以及group by使用的索引长度。<br>当索引字段为定长数据类型，比如：char，int，datetime，需要有是否为空的标记，这个标记需要占用1个字节；<br>当索引字段为变长数据类型，比如：varchar，除了是否为空的标记外，还需要有长度信息，需要占用2个字节；<br>当字段定义为非空的时候，是否为空的标记将不占用字节；<br>同时还需要考虑表所使用字符集的差异，latin1编码一个字符1个字节，gbk编码一个字符2个字节，utf8编码一个字符3个字节；</p>
 </li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">varchr(10)变长字段且允许NULL : 10*(Character <span class="operator"><span class="keyword">Set</span>：utf8=<span class="number">3</span>,gbk=<span class="number">2</span>,latin1=<span class="number">1</span>)+<span class="number">1</span>(<span class="literal">NULL</span>标记位)+<span class="number">2</span>(变长字段)</span></div><div class="line">varchr(<span class="number">10</span>)变长字段且不允许<span class="literal">NULL</span> : <span class="number">10</span>*(<span class="built_in">Character</span> <span class="keyword">Set</span>：utf8=<span class="number">3</span>,gbk=<span class="number">2</span>,latin1=<span class="number">1</span>)+<span class="number">2</span>(变长字段)</div><div class="line"><span class="built_in">char</span>(<span class="number">10</span>)固定字段且允许<span class="literal">NULL</span> : <span class="number">10</span>*(<span class="built_in">Character</span> <span class="keyword">Set</span>：utf8=<span class="number">3</span>,gbk=<span class="number">2</span>,latin1=<span class="number">1</span>)+<span class="number">1</span>(<span class="literal">NULL</span>标记位)</div><div class="line"><span class="built_in">char</span>(<span class="number">10</span>)固定字段且不允许<span class="literal">NULL</span> : <span class="number">10</span>*(<span class="built_in">Character</span> <span class="keyword">Set</span>：utf8=<span class="number">3</span>,gbk=<span class="number">2</span>,latin1=<span class="number">1</span>)</div></pre></td></tr></table></figure>
+
+<ul>
 <li><p>ref<br>和<code>key</code>字段配合进行查询操作的字段。</p>
 </li>
 <li><p>rows<br>MySQL认为需要检索的行数。</p>
 </li>
 <li><p>filtered</p>
 </li>
-<li>Extra<br><em>distinct</em>    当找到匹配的第一条结果后就停止搜索<br><em>using where</em>    使用了WHERE从句来限制哪些行将与下一张表匹配或者是返回给用户。如果不想返回表中的全部行，并且连接类型ALL或index，这就会发生，或者是查询有问题。<br><em>using index</em><br><em>using where,using index</em><br><em>using temporary</em><br><em>using filesort</em></li>
+<li>Extra<br><em>distinct</em>    当找到匹配的第一条结果后就停止搜索<br><em>using where</em> 使用了WHERE从句来限制哪些行将与下一张表匹配或者是返回给用户。如果不想返回表中的全部行，并且连接类型ALL或index，这就会发生，或者是查询有问题。<br><em>using index</em><br><em>using where,using index</em><br><em>using temporary</em><br><em>using filesort</em>  当MySQL不能使用索引进行排序时，就会利用自己的排序算法(快速排序算法)在内存(sort buffer)中对数据进行排序，如果内存装载不下，它会将磁盘上的数据进行分块，再对各个数据块进行排序，然后将各个块合并成有序的结果集（实际上就是外排序）。</li>
 </ul>
+<h2 id="参考资料">参考资料</h2>
+<p><a href="http://imysql.com/2014/09/19/mysql-faq-is-composite-index-support-different-sort-order.shtml" target="_blank" rel="external">imysql.cn</a></p>
 
       
     </div>
